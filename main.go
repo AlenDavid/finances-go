@@ -15,11 +15,7 @@ var err error
 
 func before() {
 	// load .env file
-	err = godotenv.Load(".env")
-
-	if err != nil {
-		panic("Error loading .env file")
-	}
+	godotenv.Load()
 
 	dsn := os.Getenv("DATABASE_URL")
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
