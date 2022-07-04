@@ -16,14 +16,15 @@ func ExpensesRoute(r *gin.Engine, db *gorm.DB) {
 
 		result := db.Model(&Expense{}).Limit(10).Scan(&expenses)
 
-		if result.Error != nil {
+		if err := result.Error; err != nil {
 			c.JSON(404, gin.H{
 				"message": "Expense not found",
+				"error":   err,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"expense": expenses,
 			})
 		}
-
-		c.JSON(200, gin.H{
-			"expense": expenses,
-		})
 	})
 }
